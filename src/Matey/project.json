@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-Matey-1633547f-96d1-4462-abcc-325e1696c6ce",
 
   "dependencies": {
@@ -41,10 +41,11 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc":  {
+    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Matey.Domain": "1.0.0-*"
   },
 
   "tools": {
