@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Matey.Domain.Models.Common
 {
-    public abstract class Entity<T>
+    public abstract class Entity
     {
-        public T Id { get; set; }
+        public int Id { get; set; }
     }
 }

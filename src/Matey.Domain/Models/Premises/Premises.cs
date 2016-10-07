@@ -3,7 +3,7 @@ using Matey.Domain.Models.Common;
 
 namespace Matey.Domain.Models.Premises
 {
-    public class Premises : Entity<int>
+    public class Premises : Entity
     {
         public string Name { get; set; }
 
