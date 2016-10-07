@@ -8,9 +8,10 @@ using Matey.Data;
 namespace Matey.Data.Migrations
 {
     [DbContext(typeof(MateyDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161007220854_AddedPremisesAndPremisesMembers")]
+    partial class AddedPremisesAndPremisesMembers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")

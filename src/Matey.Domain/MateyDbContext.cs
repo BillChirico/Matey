@@ -1,4 +1,5 @@
 ﻿using Matey.Domain.Models.Identity;
+using Matey.Domain.Models.Premises;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,11 @@ namespace Matey.Data
             : base(options)
         {
         }
+
+        public DbSet<Premises> Premises { get; set; }
+
+        public DbSet<PremisesMember> PremisesMembers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
