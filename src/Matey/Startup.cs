@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Matey.Data;
 using Matey.Domain.Models.Identity;
 using Matey.Models;
+using Matey.Service.Premises;
 using Matey.Services;
 
 namespace Matey
@@ -58,6 +59,9 @@ namespace Matey
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            // Premises Services
+            services.AddTransient<IPremisesService, PremisesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

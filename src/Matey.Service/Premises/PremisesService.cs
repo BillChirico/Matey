@@ -18,5 +18,10 @@ namespace Matey.Service.Premises
 
             _context = context;
         }
+
+        public override IEnumerable<Domain.Models.Premises.Premises> GetAll()
+        {
+            return _context.Premises.Include(p => p.Members).AsEnumerable();
+        }
     }
 }

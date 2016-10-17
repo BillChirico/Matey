@@ -45,7 +45,8 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Matey.Domain": "1.0.0-*"
+    "Matey.Domain": "1.0.0-*",
+    "Matey.Service": "1.0.0-*"
   },
 
   "tools": {
