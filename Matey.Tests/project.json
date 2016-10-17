@@ -2,6 +2,10 @@
   "version": "1.0.0-*",
 
   "dependencies": {
+    "Matey.Domain": "1.0.0-*",
+    "Matey.Service": "1.0.0-*",
+    "Microsoft.EntityFrameworkCore": "1.0.1",
+    "Microsoft.EntityFrameworkCore.InMemory": "1.0.1",
     "NETStandard.Library": "1.6.0",
     "xunit": "2.2.0-beta3-build3402",
     "xunit.runner.visualstudio": "2.2.0-beta3-build1187"
