@@ -123,27 +123,39 @@ namespace Matey.Controllers
 
         // GET: Premises/Delete/5
         [Route("Delete/{id?}")]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var premises = _premisesService.GetById((int)id);
+
+            if (premises == null)
+            {
+                return NotFound();
+            }
+
+            return View(premises);
         }
 
         // POST: Premises/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Delete/{id?}")]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult Delete(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var premises = _premisesService.GetById((int)id);
 
-                return RedirectToAction("Index");
-            }
-            catch
+            if (premises == null)
             {
-                return View();
+                return NotFound();
             }
+
+            _premisesService.Delete(premises);
+
+            return RedirectToAction("Index");
         }
     }
 }
