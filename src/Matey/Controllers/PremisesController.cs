@@ -6,8 +6,11 @@ using Matey.Domain.Models.Premises;
 using Matey.Service.Premises;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 namespace Matey.Controllers
 {
+    [Route("[controller]")]
     public class PremisesController : Controller
     {
         private readonly IPremisesService _premisesService;
@@ -23,13 +26,27 @@ namespace Matey.Controllers
             return View(_premisesService.GetAll());
         }
 
-        // GET: Premises/Details/5
-        public ActionResult Details(int id)
+        // GET: Premises/5
+        [Route("{id:int}")]
+        public IActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var premises = _premisesService.GetById((int)id);
+
+            if (premises == null)
+            {
+                return NotFound();
+            }
+
+            return View(premises);
         }
 
         // GET: Premises/Create
+        [Route("[controller]/Create")]
         public ActionResult Create()
         {
             return View();
@@ -38,6 +55,7 @@ namespace Matey.Controllers
         // POST: Premises/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("[controller]/Create")]
         public ActionResult Create([Bind("Id,Address,Name")] Premises premises)
         {
             if (ModelState.IsValid)
@@ -51,29 +69,60 @@ namespace Matey.Controllers
         }
 
         // GET: Premises/Edit/5
-        public ActionResult Edit(int id)
+        [Route("Edit/{id?}")]
+        public IActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var premises = _premisesService.GetById((int) id);
+
+            if (premises == null)
+            {
+                return NotFound();
+            }
+
+            return View(premises);
         }
 
         // POST: Premises/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [Route("Edit/{id?}")]
+        public IActionResult Edit(int id, [Bind("Id,Address,Name")] Premises premises)
         {
-            try
+            if (id != premises.Id)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _premisesService.Update(premises);
+                }
+
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (_premisesService.GetById(id) == null)
+                    {
+                        return NotFound();
+                    }
+
+                    throw;
+                }
 
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(premises);
         }
 
         // GET: Premises/Delete/5
+        [Route("Delete/{id?}")]
         public ActionResult Delete(int id)
         {
             return View();
@@ -82,6 +131,7 @@ namespace Matey.Controllers
         // POST: Premises/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Delete/{id?}")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
