@@ -4,11 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Matey.Tests.ServiceTests
 {
-    public abstract class ServiceTests
+    public abstract class ServiceTest
     {
         protected readonly DbContextOptions<MateyDbContext> ContextOptions;
 
-        protected ServiceTests()
+        protected ServiceTest()
         {
             // Create a service provider to be shared by all test methods
             var serviceProvider = new ServiceCollection()

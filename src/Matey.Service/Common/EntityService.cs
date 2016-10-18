@@ -75,7 +75,7 @@ namespace Matey.Service.Common
         /// </summary>
         /// <param name="id">Id of the entity.</param>
         /// <returns>Entity with specified id or null or if does not exist.</returns>
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
             return Dbset.FirstOrDefault(e => e.Id == id);
         }

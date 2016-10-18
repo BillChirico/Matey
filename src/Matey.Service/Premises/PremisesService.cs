@@ -23,5 +23,10 @@ namespace Matey.Service.Premises
         {
             return _context.Premises.Include(p => p.Members).AsEnumerable();
         }
+
+        public override Domain.Models.Premises.Premises GetById(int id)
+        {
+            return _context.Premises.Include(p => p.Members).FirstOrDefault(p => p.Id == id);
+        }
     }
 }
