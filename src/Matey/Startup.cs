@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Matey.Data;
 using Matey.Domain.Models.Identity;
 using Matey.Models;
-using Matey.Service.Premises;
+using Matey.Service.PremisesServices;
 using Matey.Services;
 
 namespace Matey

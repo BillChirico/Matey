@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Matey.Data;
 using Matey.Domain.Models.Premises;
-using Matey.Service.Premises;
+using Matey.Service.PremisesServices;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace Matey.Tests.ServiceTests
@@ -49,6 +50,53 @@ namespace Matey.Tests.ServiceTests
                 var service = new PremisesService(context);
 
                 Assert.Equal(0, service.GetAll().FirstOrDefault().Members.Count);
+            }
+        }
+
+        [Fact]
+        public void GetMembers_ZeroMembers()
+        {
+            using (var context = new MateyDbContext(ContextOptions))
+            {
+                var service = new PremisesService(context);
+
+                Assert.Equal(0, service.GetMembers(service.GetById(1)).Count());
+            }
+        }
+
+        [Fact]
+        public void GetMembers_OneMember()
+        {
+            using (var context = new MateyDbContext(ContextOptions))
+            {
+                var service = new PremisesService(context);
+
+                var premises = service.GetById(1);
+
+                premises.Members.Add(new PremisesMember());
+
+                Assert.Equal(1, service.GetMembers(service.GetById(1)).Count());
+            }
+        }
+
+        [Fact]
+        public void AddMember()
+        {
+            using (var context = new MateyDbContext(ContextOptions))
+            {
+                var service = new PremisesService(context);
+
+                var premises = service.GetById(1);
+
+                service.AddMember(premises, new PremisesMember());
+
+                Assert.Equal(1, context.Premises.FirstOrDefault(p => p.Id == 1).Members.Count);
+            }
+
+            // Create a new context to force a reload in order to confirm that SaveChanges has been called.
+            using (var context = new MateyDbContext(ContextOptions))
+            {
+                Assert.Equal(1, context.Premises.Include(p => p.Members).FirstOrDefault(p => p.Id == 1).Members.Count);
             }
         }
     }
