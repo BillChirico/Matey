@@ -24,11 +24,22 @@ namespace Matey.Service.PremisesServices
             return _context.Premises.Include(p => p.Members).AsEnumerable();
         }
 
+        /// <summary>
+        /// Gets all of the members of the premises.
+        /// </summary>
+        /// <param name="premises">Premises to get the members of.</param>
+        /// <returns>List of PremisesMember.</returns>
         public IEnumerable<PremisesMember> GetMembers(Premises premises)
         {
             return _context.Premises.FirstOrDefault(p => p == premises).Members;
         }
 
+        /// <summary>
+        /// Adds a member to the premises.
+        /// </summary>
+        /// <param name="premises">Premises to add the new member to.</param>
+        /// <param name="member">Member to be added to the premises.</param>
+        /// <returns>Updated Premises.</returns>
         public Premises AddMember(Premises premises, PremisesMember member)
         {
             premises.Members.Add(member);
