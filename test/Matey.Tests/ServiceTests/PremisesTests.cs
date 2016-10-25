@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Matey.Data;
 using Matey.Domain.Models.Premises;
@@ -28,6 +29,17 @@ namespace Matey.Tests.ServiceTests
                 }
 
                 context.SaveChanges();
+            }
+        }
+
+        [Fact]
+        public void GetById()
+        {
+            using (var context = new MateyDbContext(ContextOptions))
+            {
+                var service = new PremisesService(context);
+
+                Assert.Equal("Name1", service.GetById(1).Name);
             }
         }
 
@@ -97,6 +109,35 @@ namespace Matey.Tests.ServiceTests
             using (var context = new MateyDbContext(ContextOptions))
             {
                 Assert.Equal(1, context.Premises.Include(p => p.Members).FirstOrDefault(p => p.Id == 1).Members.Count);
+            }
+        }
+
+        [Fact]
+        public void RemoveMember()
+        {
+            using (var context = new MateyDbContext(ContextOptions))
+            {
+                var service = new PremisesService(context);
+
+                var premises = service.GetById(1);
+
+                var member = new PremisesMember();
+
+                context.Premises.Include(p => p.Members).FirstOrDefault(p => p.Id == 1).Members.Add(member);
+
+                context.SaveChanges();
+
+                Assert.Equal(1, context.Premises.Include(p => p.Members).FirstOrDefault(p => p.Id == 1).Members.Count);
+
+                service.RemoveMember(premises, member);
+
+                Assert.Equal(0, context.Premises.Include(p => p.Members).FirstOrDefault(p => p.Id == 1).Members.Count);
+            }
+
+            // Create a new context to force a reload in order to confirm that SaveChanges has been called.
+            using (var context = new MateyDbContext(ContextOptions))
+            {
+                Assert.Equal(0, context.Premises.Include(p => p.Members).FirstOrDefault(p => p.Id == 1).Members.Count);
             }
         }
     }
