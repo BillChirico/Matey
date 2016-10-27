@@ -68,5 +68,10 @@ namespace Matey.Service.PremisesServices
 
             return premises;
         }
+
+        public bool ContainsMember(Premises premises, string userId)
+        {
+            return GetMembers(premises).Any(m => m.UserId == userId);
+        }
     }
 }

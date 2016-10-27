@@ -1,3 +1,4 @@
+using System;
 using Matey.Domain.Models.Premises;
 using Matey.Service.PremisesServices;
 using Microsoft.AspNetCore.Mvc;
@@ -184,11 +185,24 @@ namespace Matey.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddMember(int id, [Bind("UserId, Admin")] PremisesMember member)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(member);
+            }
+
             var premises = _premisesService.GetById(id);
 
             if (premises == null)
             {
                 return NotFound();
+            }
+
+            // Make sure tha the premises does not already contain the member.
+            if (_premisesService.ContainsMember(premises, member.UserId))
+            {
+                ModelState.AddModelError(string.Empty, "That member already exists in the premises!");
+
+                return View(member);
             }
 
             _premisesService.AddMember(premises, member);

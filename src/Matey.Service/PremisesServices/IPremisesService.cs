@@ -28,5 +28,7 @@ namespace Matey.Service.PremisesServices
         /// <param name="member">Member to be removed from the premises.</param>
         /// <returns>Updated premises.</returns>
         Premises RemoveMember(Premises premises, PremisesMember member);
+
+        bool ContainsMember(Premises premises, string userId);
     }
 }
