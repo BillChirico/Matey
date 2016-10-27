@@ -43,7 +43,7 @@ namespace Matey.Web
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddDbContext<MateyDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Matey")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Matey.Web")));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<MateyDbContext>()
