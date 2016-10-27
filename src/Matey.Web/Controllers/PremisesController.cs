@@ -152,5 +152,50 @@ namespace Matey.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        #region Members
+
+        [Route("Manage/{id?}")]
+        public IActionResult ManageMembers(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var premises = _premisesService.GetById((int)id);
+
+            if (premises == null)
+            {
+                return NotFound();
+            }
+
+            return View(_premisesService.GetMembers(premises));
+        }
+
+        [Route("Manage/{id}/AddMember")]
+        public IActionResult AddMember(int id)
+        {
+            return View();
+        }
+
+        [Route("Manage/{id}/AddMember")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddMember(int id, [Bind("UserId, Admin")] PremisesMember member)
+        {
+            var premises = _premisesService.GetById(id);
+
+            if (premises == null)
+            {
+                return NotFound();
+            }
+
+            _premisesService.AddMember(premises, member);
+
+            return RedirectToAction("ManageMembers");
+        }
+
+        #endregion
     }
 }

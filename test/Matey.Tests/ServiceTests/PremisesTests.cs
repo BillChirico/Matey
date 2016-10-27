@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Matey.Data;
+using Matey.Domain.Models.Identity;
 using Matey.Domain.Models.Premises;
 using Matey.Service.PremisesServices;
 using Microsoft.EntityFrameworkCore;
@@ -73,6 +74,37 @@ namespace Matey.Tests.ServiceTests
                 var service = new PremisesService(context);
 
                 Assert.Equal(0, service.GetMembers(service.GetById(1)).Count());
+            }
+        }
+
+        [Fact]
+        public void GetMembers_UserIsNotNull()
+        {
+            using (var context = new MateyDbContext(ContextOptions))
+            {
+                var service = new PremisesService(context);
+
+                var user = context.Users.Add(new User
+                {
+                    Id = "1"
+                });
+
+                service.AddMember(service.GetById(1), new PremisesMember
+                {
+                    Id = 1,
+                    User = user.Entity
+                });
+
+                context.SaveChanges();
+
+                Assert.Equal(1, service.GetMembers(service.GetById(1)).Count());
+
+            }
+
+            using (var context = new MateyDbContext(ContextOptions))
+            {
+                var service = new PremisesService(context);
+                Assert.NotNull(service.GetMembers(service.GetById(1)).FirstOrDefault().User);
             }
         }
 

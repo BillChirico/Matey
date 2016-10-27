@@ -1,0 +1,31 @@
+﻿@model IEnumerable<PremisesMember>
+
+@{
+    ViewBag.Title = "Manage Members";
+}
+
+<h2>Manage Members</h2>
+
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Admin</th>
+        <th>Manage</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var member in Model)
+    {
+        <tr>
+            <td>@member.Id</td>
+            <td>@member.User.UserName</td>
+            <td>@member.Admin</td>
+            <td>remove</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="AddMember">Add Member</a>

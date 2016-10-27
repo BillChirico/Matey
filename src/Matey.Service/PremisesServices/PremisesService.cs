@@ -31,7 +31,7 @@ namespace Matey.Service.PremisesServices
         /// <returns>List of PremisesMember.</returns>
         public IEnumerable<PremisesMember> GetMembers(Premises premises)
         {
-            return _context.Premises.FirstOrDefault(p => p == premises).Members;
+            return _context.Premises.Include(p => p.Members).ThenInclude(m => m.User).FirstOrDefault(p => p == premises).Members;
         }
 
         /// <summary>

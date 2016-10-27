@@ -1,0 +1,42 @@
+﻿@model PremisesMember
+
+@{
+    ViewBag.Title = "Add Member";
+}
+
+<h2>Add Member</h2>
+
+<form asp-action="AddMember">
+    <div class="form-horizontal">
+        <h4>Premises</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="UserId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Admin" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Admin" class="form-control" />
+                <span asp-validation-for="Admin" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-raised btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="ManageMembers">Back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
