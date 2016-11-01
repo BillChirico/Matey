@@ -8,6 +8,10 @@ namespace Matey.Domain.Models.Utilities
     {
         public string Name { get; set; }
 
+        public int PremisesId { get; set; }
+
+        public Premises.Premises Premises { get; set; }
+
         public int ManagerId { get; set; }
 
         public PremisesMember Manager { get; set; }

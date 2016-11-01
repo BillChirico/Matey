@@ -8,9 +8,10 @@ using Matey.Domain;
 namespace Matey.Web.Migrations
 {
     [DbContext(typeof(MateyDbContext))]
-    partial class MateyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161101205000_AddedPremisesToUtility")]
+    partial class AddedPremisesToUtility
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
