@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Matey.Domain.Models.Premises;
 using Matey.Service.PremisesServices;
 using Microsoft.AspNetCore.Mvc;
@@ -206,6 +207,39 @@ namespace Matey.Web.Controllers
             }
 
             _premisesService.AddMember(premises, member);
+
+            return RedirectToAction("ManageMembers");
+        }
+
+        [Route("Manage/{id}/RemoveMember")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveMember(int id, int memberId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("ManageMembers");
+            }
+
+            var premises = _premisesService.GetById(id);
+
+            if (premises == null)
+            {
+                return RedirectToAction("ManageMembers");
+            }
+
+            var member = _premisesService.GetMembers(premises).FirstOrDefault(m => m.Id == memberId);
+
+            if (member == null)
+            {
+                return RedirectToAction("ManageMembers");
+            }
+
+            // Make sure tha the premises does not already contain the member.
+            if (_premisesService.ContainsMember(premises, member.UserId))
+            {
+                _premisesService.RemoveMember(premises, member);
+            }
 
             return RedirectToAction("ManageMembers");
         }

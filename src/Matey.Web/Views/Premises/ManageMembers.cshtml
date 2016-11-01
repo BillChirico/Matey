@@ -22,7 +22,14 @@
             <td>@member.Id</td>
             <td>@member.User.UserName</td>
             <td>@member.Admin</td>
-            <td>remove</td>
+            <td>
+                <form asp-controller="Premises" asp-action="RemoveMember" method="post" class="form-horizontal">
+                    <div>
+                        <input asp-for="@member.Id" name="memberId" type="hidden" />
+                        <input type="submit" class="btn btn-sm btn-raised btn-primary" value="Remove" title="Remove Member" />
+                    </div>
+                </form>
+            </td>
         </tr>
     }
     </tbody>
