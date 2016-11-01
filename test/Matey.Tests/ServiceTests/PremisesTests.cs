@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
-using Matey.Data;
+using Matey.Domain;
 using Matey.Domain.Models.Identity;
 using Matey.Domain.Models.Premises;
 using Matey.Service.PremisesServices;

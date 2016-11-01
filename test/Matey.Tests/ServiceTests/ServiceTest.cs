@@ -1,4 +1,4 @@
-﻿using Matey.Data;
+﻿using Matey.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

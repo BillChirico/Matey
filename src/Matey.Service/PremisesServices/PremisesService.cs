@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Matey.Data;
+using Matey.Domain;
 using Matey.Domain.Models.Premises;
 using Matey.Service.Common;
 using Microsoft.EntityFrameworkCore;

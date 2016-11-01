@@ -1,13 +1,14 @@
 ﻿using System;
-using Matey.Data;
+using Matey.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Matey.Web.Data.Migrations
+namespace Matey.Web.Migrations
 {
     [DbContext(typeof(MateyDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    partial class MateyDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -83,7 +84,11 @@ namespace Matey.Web.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("Admin");
+                    b.Property<bool>("Admin")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("BillId");
 
                     b.Property<int?>("PremisesId");
 
@@ -91,11 +96,79 @@ namespace Matey.Web.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BillId");
+
                     b.HasIndex("PremisesId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("PremisesMembers");
+                });
+
+            modelBuilder.Entity("Matey.Domain.Models.Utilities.Bill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("AmountDue");
+
+                    b.Property<DateTimeOffset>("DueDate");
+
+                    b.Property<DateTimeOffset>("ReceivedDate");
+
+                    b.Property<int>("UtilityId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UtilityId");
+
+                    b.ToTable("Bills");
+                });
+
+            modelBuilder.Entity("Matey.Domain.Models.Utilities.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BillId");
+
+                    b.Property<int>("MemberId");
+
+                    b.Property<bool>("Paid")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("PremisesMemberId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillId");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("PremisesMemberId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("Matey.Domain.Models.Utilities.Utility", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ManagerId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("PremisesMemberId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManagerId");
+
+                    b.HasIndex("PremisesMemberId");
+
+                    b.ToTable("Utilities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -207,6 +280,10 @@ namespace Matey.Web.Data.Migrations
 
             modelBuilder.Entity("Matey.Domain.Models.Premises.PremisesMember", b =>
                 {
+                    b.HasOne("Matey.Domain.Models.Utilities.Bill")
+                        .WithMany("Transactions")
+                        .HasForeignKey("BillId");
+
                     b.HasOne("Matey.Domain.Models.Premises.Premises")
                         .WithMany("Members")
                         .HasForeignKey("PremisesId");
@@ -214,6 +291,42 @@ namespace Matey.Web.Data.Migrations
                     b.HasOne("Matey.Domain.Models.Identity.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Matey.Domain.Models.Utilities.Bill", b =>
+                {
+                    b.HasOne("Matey.Domain.Models.Utilities.Utility", "Utility")
+                        .WithMany("Bills")
+                        .HasForeignKey("UtilityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Matey.Domain.Models.Utilities.Transaction", b =>
+                {
+                    b.HasOne("Matey.Domain.Models.Utilities.Bill", "Bill")
+                        .WithMany()
+                        .HasForeignKey("BillId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Matey.Domain.Models.Premises.PremisesMember", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId");
+
+                    b.HasOne("Matey.Domain.Models.Premises.PremisesMember")
+                        .WithMany("Transactions")
+                        .HasForeignKey("PremisesMemberId");
+                });
+
+            modelBuilder.Entity("Matey.Domain.Models.Utilities.Utility", b =>
+                {
+                    b.HasOne("Matey.Domain.Models.Premises.PremisesMember", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Matey.Domain.Models.Premises.PremisesMember")
+                        .WithMany("ManagedUtilities")
+                        .HasForeignKey("PremisesMemberId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

@@ -1,4 +1,4 @@
-﻿using Matey.Data;
+﻿using Matey.Domain;
 using Matey.Domain.Models.Identity;
 using Matey.Service.PremisesServices;
 using Matey.Web.Services;
