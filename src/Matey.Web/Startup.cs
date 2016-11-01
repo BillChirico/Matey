@@ -1,6 +1,7 @@
 ﻿using Matey.Domain;
 using Matey.Domain.Models.Identity;
 using Matey.Service.PremisesServices;
+using Matey.Service.UtilityServices;
 using Matey.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,6 +58,9 @@ namespace Matey.Web
 
             // Premises Services
             services.AddTransient<IPremisesService, PremisesService>();
+
+            // Utility Services
+            services.AddTransient<IUtilityService, UtilityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
