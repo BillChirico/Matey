@@ -178,6 +178,13 @@ namespace Matey.Web.Controllers
         [Route("Manage/{id}/AddMember")]
         public IActionResult AddMember(int id)
         {
+            var premises = _premisesService.GetById(id);
+
+            if (premises == null)
+            {
+                return NotFound();
+            }
+
             return View();
         }
 
