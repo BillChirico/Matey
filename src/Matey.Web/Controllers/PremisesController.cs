@@ -216,7 +216,7 @@ namespace Matey.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult RemoveMember(int id, int memberId)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 return RedirectToAction("ManageMembers");
             }
@@ -225,14 +225,14 @@ namespace Matey.Web.Controllers
 
             if (premises == null)
             {
-                return RedirectToAction("ManageMembers");
+                return NotFound();
             }
 
             var member = _premisesService.GetMembers(premises).FirstOrDefault(m => m.Id == memberId);
 
             if (member == null)
             {
-                return RedirectToAction("ManageMembers");
+                return NotFound();
             }
 
             // Make sure tha the premises does not already contain the member.
